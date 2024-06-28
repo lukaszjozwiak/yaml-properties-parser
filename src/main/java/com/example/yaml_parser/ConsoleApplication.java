@@ -40,16 +40,13 @@ public class ConsoleApplication implements ApplicationRunner {
 
     Set<String> commonNotProd = merger.leftKeys(common, prod);
     Set<String> commonNotUat = merger.leftKeys(common, uat);
-    Set<String> commonNotCommon = merger.leftKeys(uat, common);
 
     log.info("Properties from common, missing in prod:\n{}", commonNotProd);
     log.info("Properties from common, missing in uat:\n{}", commonNotUat);
 
-    Props intersection = merger.intersection(List.of(uat, prod, common));
     Props uatSpecific = merger.left(uat, common);
     Props prodSpecific = merger.left(prod, common);
 
-    fileUtils.writeToFile(intersection.getName() + ".yaml", intersection.toString());
     fileUtils.writeToFile(uatSpecific.getName() + ".yaml", uatSpecific.toString());
     fileUtils.writeToFile(prodSpecific.getName() + ".yaml", prodSpecific.toString());
   }
